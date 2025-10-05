@@ -72,7 +72,9 @@ export default async function handler(req, res) {
 
   // Construct Vapi call request
   const vapiPayload = {
-    assistant: vapiAgentId,
+    assistant: {
+      id: vapiAgentId,
+    },
     phoneNumberId: null, // Use default
     customer: {
       number: restaurant.phone,
@@ -87,10 +89,6 @@ export default async function handler(req, res) {
         userContact: user.contact,
       },
     },
-    // Webhook for call events
-    ...(baseUrl && {
-      serverUrl: `${baseUrl}/api/vapi-webhook`,
-    }),
   };
 
   console.log('[/api/book] Calling Vapi API:', JSON.stringify(vapiPayload, null, 2));
