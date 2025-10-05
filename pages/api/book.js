@@ -72,10 +72,7 @@ export default async function handler(req, res) {
 
   // Construct Vapi call request
   const vapiPayload = {
-    assistant: {
-      id: vapiAgentId,
-    },
-    phoneNumberId: null, // Use default
+    assistantId: vapiAgentId,
     customer: {
       number: restaurant.phone,
     },
