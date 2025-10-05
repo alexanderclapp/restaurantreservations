@@ -39,10 +39,14 @@ export default function BookingModal({ restaurant, onClose }: BookingModalProps)
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: formData.name,
-          contact: formData.contact,
-          restaurant: restaurant.name,
-          restaurantPhone: restaurant.phone,
+          restaurant: {
+            name: restaurant.name,
+            phone: restaurant.phone,
+          },
+          user: {
+            name: formData.name,
+            contact: formData.contact,
+          },
           date: formData.date,
           time: formData.time,
           partySize: formData.partySize,
