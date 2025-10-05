@@ -31,6 +31,7 @@
  */
 
 const { sendSms } = require('../../lib/twilio');
+const db = require('../../lib/db');
 
 /**
  * Check if a string looks like a phone number
@@ -64,8 +65,9 @@ export default async function handler(req, res) {
     const eventType = event.type || event.event;
     const callData = event.call || event;
     const status = callData.status || event.status;
+    const callId = callData.id || event.id;
     
-    console.log('[/api/vapi-webhook] Event type:', eventType, '| Status:', status);
+    console.log('[/api/vapi-webhook] Event type:', eventType, '| Status:', status, '| Call ID:', callId);
 
     // Check if call is completed/confirmed
     const isCompleted = status === 'completed' || 
@@ -74,8 +76,27 @@ export default async function handler(req, res) {
                        eventType === 'end-of-call-report';
 
     if (!isCompleted) {
-      console.log('[/api/vapi-webhook] Call not completed yet, skipping SMS');
+      console.log('[/api/vapi-webhook] Call not completed yet, skipping');
       return res.status(200).json({ received: true, action: 'none' });
+    }
+
+    // Update reservation status in database
+    if (callId) {
+      try {
+        const updateResult = await db.query(
+          'UPDATE reservations SET status = $1, updated_at = CURRENT_TIMESTAMP WHERE vapi_call_id = $2 RETURNING id, restaurant_name, user_id',
+          ['confirmed', callId]
+        );
+
+        if (updateResult.rows.length > 0) {
+          const reservation = updateResult.rows[0];
+          console.log('[/api/vapi-webhook] ✅ Updated reservation ID:', reservation.id, 'to confirmed');
+        } else {
+          console.log('[/api/vapi-webhook] ⚠️ No reservation found with call ID:', callId);
+        }
+      } catch (dbError) {
+        console.error('[/api/vapi-webhook] Failed to update reservation status:', dbError.message);
+      }
     }
 
     // Extract variables
