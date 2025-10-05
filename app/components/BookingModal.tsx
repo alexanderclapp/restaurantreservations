@@ -83,21 +83,21 @@ export default function BookingModal({ restaurant, onClose }: BookingModalProps)
 
   return (
     <div 
-      className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/50 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade-in"
       onClick={onClose}
     >
       <div 
-        className="bg-white rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+        className="bg-white rounded-3xl max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-fade-in-up"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="border-b border-gray-200 px-8 py-6 relative">
+        <div className="border-b border-gray-100 px-8 py-8 relative">
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 text-[#555555] hover:text-[#111111] transition-colors"
+            className="absolute top-8 right-8 text-gray-400 hover:text-black transition-colors rounded-full p-2 hover:bg-gray-100"
           >
             <svg 
-              className="w-6 h-6" 
+              className="w-5 h-5" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -111,20 +111,20 @@ export default function BookingModal({ restaurant, onClose }: BookingModalProps)
             </svg>
           </button>
           
-          <h2 className="text-2xl font-medium text-[#111111] mb-1">
-            Book a Table
+          <h2 className="text-3xl font-serif font-semibold text-black mb-2">
+            Reserve a Table
           </h2>
-          <p className="text-sm text-[#555555]">{restaurant.name}</p>
+          <p className="text-base text-gray-500">{restaurant.name}</p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="px-8 py-6 space-y-5">
+        <form onSubmit={handleSubmit} className="px-8 py-8 space-y-6">
           {/* Date & Time Row */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label 
                 htmlFor="date" 
-                className="block text-sm font-medium text-[#111111] mb-2"
+                className="block text-sm font-medium text-black mb-2"
               >
                 Date
               </label>
@@ -136,14 +136,14 @@ export default function BookingModal({ restaurant, onClose }: BookingModalProps)
                 onChange={handleChange}
                 required
                 min={new Date().toISOString().split('T')[0]}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-[#111111] text-sm focus:outline-none focus:border-[#111111] focus:ring-1 focus:ring-[#111111] transition-colors"
+                className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-black bg-gray-50 focus:bg-white text-sm focus:outline-none focus:border-black focus:ring-2 focus:ring-black/5 transition-all"
               />
             </div>
 
             <div>
               <label 
                 htmlFor="time" 
-                className="block text-sm font-medium text-[#111111] mb-2"
+                className="block text-sm font-medium text-black mb-2"
               >
                 Time
               </label>
@@ -154,7 +154,7 @@ export default function BookingModal({ restaurant, onClose }: BookingModalProps)
                 value={formData.time}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-[#111111] text-sm focus:outline-none focus:border-[#111111] focus:ring-1 focus:ring-[#111111] transition-colors"
+                className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-black bg-gray-50 focus:bg-white text-sm focus:outline-none focus:border-black focus:ring-2 focus:ring-black/5 transition-all"
               />
             </div>
           </div>
@@ -163,7 +163,7 @@ export default function BookingModal({ restaurant, onClose }: BookingModalProps)
           <div>
             <label 
               htmlFor="partySize" 
-              className="block text-sm font-medium text-[#111111] mb-2"
+              className="block text-sm font-medium text-black mb-2"
             >
               Party Size
             </label>
@@ -173,7 +173,7 @@ export default function BookingModal({ restaurant, onClose }: BookingModalProps)
               value={formData.partySize}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-[#111111] text-sm focus:outline-none focus:border-[#111111] focus:ring-1 focus:ring-[#111111] transition-colors"
+              className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-black bg-gray-50 focus:bg-white text-sm focus:outline-none focus:border-black focus:ring-2 focus:ring-black/5 transition-all"
             >
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((size) => (
                 <option key={size} value={size}>
@@ -187,7 +187,7 @@ export default function BookingModal({ restaurant, onClose }: BookingModalProps)
           <div>
             <label 
               htmlFor="name" 
-              className="block text-sm font-medium text-[#111111] mb-2"
+              className="block text-sm font-medium text-black mb-2"
             >
               Your Name
             </label>
@@ -199,7 +199,7 @@ export default function BookingModal({ restaurant, onClose }: BookingModalProps)
               onChange={handleChange}
               required
               placeholder="John Doe"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-[#111111] text-sm placeholder:text-[#999999] focus:outline-none focus:border-[#111111] focus:ring-1 focus:ring-[#111111] transition-colors"
+              className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-black bg-gray-50 focus:bg-white text-sm placeholder:text-gray-400 focus:outline-none focus:border-black focus:ring-2 focus:ring-black/5 transition-all"
             />
           </div>
 
@@ -207,7 +207,7 @@ export default function BookingModal({ restaurant, onClose }: BookingModalProps)
           <div>
             <label 
               htmlFor="contact" 
-              className="block text-sm font-medium text-[#111111] mb-2"
+              className="block text-sm font-medium text-black mb-2"
             >
               Email or Phone
             </label>
@@ -218,8 +218,8 @@ export default function BookingModal({ restaurant, onClose }: BookingModalProps)
               value={formData.contact}
               onChange={handleChange}
               required
-              placeholder="john@example.com or +34 612 345 678"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-[#111111] text-sm placeholder:text-[#999999] focus:outline-none focus:border-[#111111] focus:ring-1 focus:ring-[#111111] transition-colors"
+              placeholder="john@example.com or +1 234 567 890"
+              className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-black bg-gray-50 focus:bg-white text-sm placeholder:text-gray-400 focus:outline-none focus:border-black focus:ring-2 focus:ring-black/5 transition-all"
             />
           </div>
 
@@ -240,12 +240,20 @@ export default function BookingModal({ restaurant, onClose }: BookingModalProps)
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-[#111111] text-white py-3.5 px-6 rounded-lg font-medium text-sm transition-colors hover:bg-[#222222] active:bg-[#000000] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-black text-white py-4 px-6 rounded-xl font-medium text-base transition-all hover:bg-gray-800 hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
-            {isSubmitting ? 'Submitting...' : 'Confirm Reservation'}
+            {isSubmitting ? (
+              <span className="flex items-center justify-center gap-2">
+                <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Processing...
+              </span>
+            ) : 'Confirm Reservation'}
           </button>
 
-          <p className="text-xs text-center text-[#777777]">
+          <p className="text-xs text-center text-gray-400 leading-relaxed">
             We'll call the restaurant on your behalf and send you a confirmation
           </p>
         </form>

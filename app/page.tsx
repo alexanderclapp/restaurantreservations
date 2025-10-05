@@ -20,28 +20,33 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="border-b border-gray-200">
-        <div className="container mx-auto px-6 py-8 max-w-7xl text-center">
-          <h1 className="text-4xl md:text-5xl font-light tracking-tight text-[#111111] mb-3">
+    <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+      {/* Hero Section */}
+      <header className="border-b border-gray-100">
+        <div className="container mx-auto px-6 py-16 md:py-20 max-w-4xl text-center">
+          <h1 className="text-5xl md:text-6xl font-serif font-semibold text-black mb-4 tracking-tight">
             Madrid Fine Dining
           </h1>
-          <p className="text-lg text-[#555555] font-light">
-            Reserve a table at the city's most sought-after restaurants
+          <p className="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+            Reserve a table at the city's most sought-after restaurants.
           </p>
         </div>
       </header>
 
       {/* Restaurant Grid */}
-      <div className="container mx-auto px-6 py-12 max-w-7xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {restaurants.map((restaurant) => (
-            <RestaurantCard
+      <div className="container mx-auto px-6 py-16 max-w-7xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in">
+          {restaurants.map((restaurant, index) => (
+            <div
               key={restaurant.id}
-              restaurant={restaurant}
-              onBookTable={() => handleBookTable(restaurant)}
-            />
+              className="animate-fade-in-up"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <RestaurantCard
+                restaurant={restaurant}
+                onBookTable={() => handleBookTable(restaurant)}
+              />
+            </div>
           ))}
         </div>
       </div>
