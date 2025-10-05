@@ -30,8 +30,23 @@
  */
 
 import { getServerSession } from 'next-auth/next';
-import authOptions from './auth/[...nextauth]';
+import { authOptions } from './auth/[...nextauth]';
 const db = require('../../lib/db');
+
+// Helper function to format date for Vapi
+function formatDateForVapi(dateString, timeString) {
+  const date = new Date(`${dateString}T${timeString}`);
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  
+  const dayName = days[date.getDay()];
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  
+  return `${dayName} ${day} ${month} · ${hours}:${minutes}`;
+}
 
 export default async function handler(req, res) {
   // Only allow POST
@@ -45,6 +60,8 @@ export default async function handler(req, res) {
   
   // Get user session (if logged in)
   const session = await getServerSession(req, res, authOptions);
+  
+  console.log('[/api/book] Session:', session ? `User: ${session.user?.email} (ID: ${session.user?.id})` : 'No session (guest)');
 
   // Validate required fields
   if (!restaurant?.name || !restaurant?.phone) {
@@ -77,6 +94,9 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Vapi agent ID not configured' });
   }
 
+  // Format date and time for Vapi (e.g., "Tue 7 Oct · 19:30")
+  const formattedDateTime = formatDateForVapi(date, time);
+  
   // Construct Vapi call request
   const vapiPayload = {
     assistantId: vapiAgentId,
@@ -87,8 +107,7 @@ export default async function handler(req, res) {
     assistantOverrides: {
       variableValues: {
         restaurant: restaurant.name,
-        date: date,
-        time: time,
+        dateTime: formattedDateTime,
         partySize: partySize || 2,
         userName: user.name || '',
         userContact: user.contact,
