@@ -80,17 +80,55 @@ export default async function handler(req, res) {
       return res.status(200).json({ received: true, action: 'none' });
     }
 
+    // Analyze call outcome to determine if reservation was accepted
+    const analysis = callData.analysis || {};
+    const summary = analysis.summary || '';
+    const successEvaluation = analysis.successEvaluation || '';
+    const transcript = callData.transcript || '';
+    
+    // Check various indicators of success
+    const wasAccepted = 
+      successEvaluation.toLowerCase().includes('success') ||
+      successEvaluation.toLowerCase().includes('confirmed') ||
+      summary.toLowerCase().includes('accepted') ||
+      summary.toLowerCase().includes('confirmed') ||
+      summary.toLowerCase().includes('reservation was made') ||
+      summary.toLowerCase().includes('booking confirmed');
+    
+    const wasRejected = 
+      successEvaluation.toLowerCase().includes('fail') ||
+      summary.toLowerCase().includes('declined') ||
+      summary.toLowerCase().includes('rejected') ||
+      summary.toLowerCase().includes('not available') ||
+      summary.toLowerCase().includes('fully booked') ||
+      summary.toLowerCase().includes('no availability');
+
+    console.log('[/api/vapi-webhook] Call analysis:', {
+      summary: summary.substring(0, 100),
+      successEvaluation,
+      wasAccepted,
+      wasRejected
+    });
+
+    // Determine new status
+    let newStatus = 'pending'; // default
+    if (wasAccepted) {
+      newStatus = 'confirmed';
+    } else if (wasRejected) {
+      newStatus = 'cancelled';
+    }
+
     // Update reservation status in database
     if (callId) {
       try {
         const updateResult = await db.query(
-          'UPDATE reservations SET status = $1, updated_at = CURRENT_TIMESTAMP WHERE vapi_call_id = $2 RETURNING id, restaurant_name, user_id',
-          ['confirmed', callId]
+          'UPDATE reservations SET status = $1, notes = $2, updated_at = CURRENT_TIMESTAMP WHERE vapi_call_id = $3 RETURNING id, restaurant_name, user_id',
+          [newStatus, summary || null, callId]
         );
 
         if (updateResult.rows.length > 0) {
           const reservation = updateResult.rows[0];
-          console.log('[/api/vapi-webhook] ✅ Updated reservation ID:', reservation.id, 'to confirmed');
+          console.log('[/api/vapi-webhook] ✅ Updated reservation ID:', reservation.id, 'to', newStatus);
         } else {
           console.log('[/api/vapi-webhook] ⚠️ No reservation found with call ID:', callId);
         }
