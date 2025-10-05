@@ -73,6 +73,7 @@ export default async function handler(req, res) {
   // Construct Vapi call request
   const vapiPayload = {
     assistantId: vapiAgentId,
+    phoneNumberId: '68303dc4-ca9d-4acd-bbee-067348a8a02a', // Twilio number configured in Vapi
     customer: {
       number: restaurant.phone,
     },
