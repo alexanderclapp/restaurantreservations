@@ -29,6 +29,10 @@
  *   }'
  */
 
+import { getServerSession } from 'next-auth/next';
+import authOptions from './auth/[...nextauth]';
+const db = require('../../lib/db');
+
 export default async function handler(req, res) {
   // Only allow POST
   if (req.method !== 'POST') {
@@ -38,6 +42,9 @@ export default async function handler(req, res) {
   console.log('[/api/book] Received booking request:', JSON.stringify(req.body, null, 2));
 
   const { restaurant, date, time, partySize, user } = req.body;
+  
+  // Get user session (if logged in)
+  const session = await getServerSession(req, res, authOptions);
 
   // Validate required fields
   if (!restaurant?.name || !restaurant?.phone) {
@@ -119,6 +126,22 @@ export default async function handler(req, res) {
     const callId = vapiData.id || vapiData.callId;
     
     console.log('[/api/book] ✅ Call initiated successfully, ID:', callId);
+
+    // If user is logged in, save reservation to database
+    if (session?.user?.id) {
+      try {
+        await db.query(
+          `INSERT INTO reservations 
+          (user_id, restaurant_name, restaurant_phone, date, time, party_size, vapi_call_id, status) 
+          VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending')`,
+          [session.user.id, restaurant.name, restaurant.phone, date, time, partySize || 2, callId]
+        );
+        console.log('[/api/book] ✅ Reservation saved to database for user:', session.user.email);
+      } catch (dbError) {
+        console.error('[/api/book] Failed to save reservation to database:', dbError);
+        // Continue anyway - the call was made successfully
+      }
+    }
 
     return res.status(200).json({
       success: true,

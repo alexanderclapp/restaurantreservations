@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Header from './components/Header'
 import RestaurantCard from './components/RestaurantCard'
 import BookingModal from './components/BookingModal'
 import { restaurants, Restaurant } from './data/restaurants'
@@ -20,9 +21,11 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      {/* Hero Section */}
-      <header className="border-b border-gray-100">
+    <>
+      <Header />
+      <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+        {/* Hero Section */}
+        <header className="border-b border-gray-100">
         <div className="container mx-auto px-6 py-16 md:py-20 max-w-7xl">
           <h1 className="text-5xl md:text-6xl font-serif font-semibold text-black mb-4 tracking-tight">
             Madrid Fine Dining
@@ -51,13 +54,14 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Booking Modal */}
-      {isModalOpen && selectedRestaurant && (
-        <BookingModal
-          restaurant={selectedRestaurant}
-          onClose={handleCloseModal}
-        />
-      )}
-    </main>
+        {/* Booking Modal */}
+        {isModalOpen && selectedRestaurant && (
+          <BookingModal
+            restaurant={selectedRestaurant}
+            onClose={handleCloseModal}
+          />
+        )}
+      </main>
+    </>
   )
 }
