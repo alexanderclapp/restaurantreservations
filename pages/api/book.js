@@ -104,7 +104,7 @@ export default async function handler(req, res) {
     customer: {
       number: restaurant.phone,
     },
-    assistantFirst: true, // CRITICAL: Assistant speaks first when call is answered
+    // Note: assistantFirst is default behavior for outbound calls
     assistantOverrides: {
       variableValues: {
         restaurant: restaurant.name,
