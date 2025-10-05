@@ -23,12 +23,12 @@ export default function RestaurantCard({ restaurant, onBookTable }: RestaurantCa
 
       {/* Content */}
       <div className="p-6 space-y-3">
-        <div className="text-center space-y-2">
+        <div className="space-y-2">
           <h2 className="text-2xl font-serif font-semibold text-black">
             {restaurant.name}
           </h2>
           
-          <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+          <div className="flex items-center gap-2 text-sm text-gray-500">
             <span>{restaurant.cuisine}</span>
             <span className="text-gray-300">•</span>
             <span>{restaurant.neighborhood}</span>

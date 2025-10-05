@@ -23,11 +23,11 @@ export default function Home() {
     <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section */}
       <header className="border-b border-gray-100">
-        <div className="container mx-auto px-6 py-16 md:py-20 max-w-4xl text-center">
+        <div className="container mx-auto px-6 py-16 md:py-20 max-w-7xl">
           <h1 className="text-5xl md:text-6xl font-serif font-semibold text-black mb-4 tracking-tight">
             Madrid Fine Dining
           </h1>
-          <p className="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+          <p className="text-gray-500 text-lg md:text-xl max-w-2xl leading-relaxed">
             Reserve a table at the city's most sought-after restaurants.
           </p>
         </div>
