@@ -21,14 +21,14 @@ export default function RestaurantCard({ restaurant, onBookTable }: RestaurantCa
       </div>
 
       {/* Content */}
-      <div className="space-y-2">
-        <div className="flex items-start justify-between">
+      <div className="space-y-2 text-center">
+        <div className="flex items-start justify-center">
           <h2 className="text-xl font-medium text-[#111111]">
             {restaurant.name}
           </h2>
         </div>
         
-        <div className="flex items-center gap-2 text-sm text-[#555555]">
+        <div className="flex items-center justify-center gap-2 text-sm text-[#555555]">
           <span>{restaurant.cuisine}</span>
           <span>·</span>
           <span>{restaurant.neighborhood}</span>

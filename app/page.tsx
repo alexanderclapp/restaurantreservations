@@ -23,7 +23,7 @@ export default function Home() {
     <main className="min-h-screen bg-white">
       {/* Header */}
       <header className="border-b border-gray-200">
-        <div className="container mx-auto px-6 py-8 max-w-7xl">
+        <div className="container mx-auto px-6 py-8 max-w-7xl text-center">
           <h1 className="text-4xl md:text-5xl font-light tracking-tight text-[#111111] mb-3">
             Madrid Fine Dining
           </h1>
